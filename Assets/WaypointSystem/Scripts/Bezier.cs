@@ -5,7 +5,14 @@ using UnityEngine;
 namespace ASWS { 
 public class Bezier : MonoBehaviour
 {
-
+        /// <summary>
+        /// get point in curve at distance t for a 
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="C"></param>
+        /// <param name="t"></param>
+        /// <returns>return point in 3d space</returns>
         public static Vector3 EvaluateQuadratic(Vector3 A, Vector3 B, Vector3 C, float t)
         {
             Vector3 p0 = Vector3.Lerp(A, B, t);
@@ -256,6 +263,13 @@ public class Bezier : MonoBehaviour
 
 
         }
+        /// <summary>
+        /// evaluate path to create bezier caurve point at that have specific spacing 
+        /// </summary>
+        /// <param name="bezierSegments"></param>
+        /// <param name="spacing"></param>
+        /// <param name="resolution"></param>
+        /// <returns></returns>
         public static List<PathPoint> EvalPath(List<BezierSegment> bezierSegments, float spacing, float resolution = 1)
         {
             List<PathPoint> pathl = new List<PathPoint>();

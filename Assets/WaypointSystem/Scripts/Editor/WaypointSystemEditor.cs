@@ -279,7 +279,7 @@ namespace ASWS {
             }
             if (GUILayout.Button("Compile graph"))
             {
-                self.CreaeGraph();
+                self.CreateGraph();
             }
 
 

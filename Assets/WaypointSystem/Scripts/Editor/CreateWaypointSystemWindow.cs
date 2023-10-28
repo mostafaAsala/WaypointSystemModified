@@ -6,11 +6,13 @@ namespace ASWS {
     public class CreateWaypointSystemWindow : EditorWindow
     {
 
-        [MenuItem("Window/MyCustomWindow")]
+        [MenuItem("Window/Create Waypoint System")]
         public static void ShowWindow()
         {
-        
+            GameObject waypointObject = new GameObject("WaypointSystem");
+            waypointObject.AddComponent<WaypointSystem>();
         }
+        
 
     }
 }

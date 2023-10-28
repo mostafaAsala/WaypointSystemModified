@@ -169,7 +169,10 @@ namespace ASWS {
             var relativeposition = (transform.position - WaypointSystem.Instance.transform.position);
             _id = (int)(relativeposition.x + WaypointSystem.Instance.WorldSize * relativeposition.z);
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>return the vector to the next point tangent to the curve</returns>
         public Vector3 getForwardVec()
         {
             return (HandleB.transform.position - transform.position).normalized;
@@ -365,6 +368,10 @@ namespace ASWS {
             HandleAoffset = HandleA.localPosition.y;
             HandleBoffset = HandleB.localPosition.y;
         }
+        /// <summary>
+        /// removes branch from loop
+        /// </summary>
+        /// <param name="branch"></param>
         public void RemoveBranch(Waypoint branch)
         {
             branch.ReverseBranch.Remove(this);
@@ -398,7 +405,7 @@ namespace ASWS {
             RecalculateInBranches();
         }
         /// <summary>
-        /// set up handles
+        /// set up handles at waypoint creation
         /// </summary>
         public void CreateHandles()
         {

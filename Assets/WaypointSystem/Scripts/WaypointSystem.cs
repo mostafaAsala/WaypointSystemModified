@@ -8,11 +8,14 @@ namespace ASWS {
     public enum ConnectionType { bezier, line }
     public class WaypointSystem : MonoBehaviour, ISerializationCallbackReceiver
     {
+        /// <summary>
+        /// singelton class instance
+        /// </summary>
         public static WaypointSystem Instance;
 
         [Tooltip("snap distance when select or branch")]
         public float nsapDistance = 2;
-        [Tooltip("don't set this at any cost.")]
+        [Tooltip("determine the width of the system to determine the id,don't set this at any cost.")]
         public int WorldSize;
         [Tooltip("set the new created waypoint with pre-calculated values for handles and normal")]
         public bool autoset = false;
@@ -41,7 +44,9 @@ namespace ASWS {
                 Instance = this;
 
         }
-        
+        /// <summary>
+        /// called when you change the system 
+        /// </summary>
         public void OnSystemchanged()
         {
             onSystemChanged?.Invoke(this, EventArgs.Empty);
@@ -68,11 +73,7 @@ namespace ASWS {
             }
         }
 
-        void Start()
-        {
-            
-        }
-
+        
       
 #if UNITY_EDITOR
         
@@ -154,7 +155,7 @@ namespace ASWS {
         /// <summary>
         /// scan the system and create a graph
         /// </summary>
-        public void CreaeGraph()
+        public void CreateGraph()
         {
             GraphUpdated = true;
             markEnEx();
@@ -257,8 +258,8 @@ namespace ASWS {
         /// </summary>
         /// <param name="source"></param>
         /// <param name="dest"></param>
-        /// <param name="Bezier"></param>
-        /// <returns></returns>
+        /// <param name="Bezier">true: bezier points, false: straight points</param>
+        /// <returns>list of points of path</returns>
         public List<Bezier.BezierSegment> GetPathpoints(Waypoint source, Waypoint dest , bool Bezier=true)
         {
             
@@ -289,7 +290,13 @@ namespace ASWS {
             return path;
         }
 
-
+        /// <summary>
+        /// get path to move through loop from start point to end loop
+        /// </summary>
+        /// <param name="LoopIndex"></param>
+        /// <param name="startPoint"></param>
+        /// <param name="LastPoint"></param>
+        /// <returns></returns>
         public List<Bezier.BezierSegment> TraverseLoopSegments(int LoopIndex, int startPoint,int LastPoint)
         {
             
@@ -303,6 +310,11 @@ namespace ASWS {
             }
             return null;
         }
+        /// <summary>
+        /// convert list of waypoint to bezier segment list
+        /// </summary>
+        /// <param name="points">path points</param>
+        /// <returns>list of bezier segments</returns>
         public List<Bezier.BezierSegment> GetPathSegments(List<Waypoint> points)
         {
             List<Bezier.BezierSegment> segments = new List<Bezier.BezierSegment>();
@@ -337,7 +349,7 @@ namespace ASWS {
 
 
         /// <summary>
-        /// evaluate a path between two points
+        /// evaluate a path between two points in the whole system
         /// </summary>
         /// <param name="source">starting point</param>
         /// <param name="dest">ending point</param>
@@ -517,10 +529,7 @@ while O isn't empty:
 return that there's no solution
          */
 
-        public void OnBeforeSerialize()
-        {
-            
-        } 
+       
         public void saveBranchData()
         {
             graphSaver = new List<graphValueSaver>();
@@ -573,7 +582,7 @@ return that there's no solution
         /// 1: dots
         /// 2: wire
         /// 3: normals
-        /// </summary>
+        /// </summary> 
         public void updateGizmoType()
         {
             foreach (var loop in loops)
@@ -585,7 +594,12 @@ return that there's no solution
                 }
             }
         }
-        
+
+        public void OnBeforeSerialize()
+        {
+            
+        }
+
         /// <summary>
         /// list of waypoint links that generate the graph, this class is just a saver to save the data of the graph till next startup
         /// contains a point and list of waypointlink that it links to
@@ -621,7 +635,9 @@ return that there's no solution
         public float absoluteDistance, CurveDistance;
        
     }
-
+    /// <summary>
+    /// A* path finding Node
+    /// </summary>
     public class Node
     {
         /// <summary>
